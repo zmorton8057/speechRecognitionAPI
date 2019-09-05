@@ -22,7 +22,8 @@
         var recognition = new SpeechRecognition();
 		const weather = ["The weather is really forking hot"];
 		const greetings = ["I am doing fine, thank you for asking!","I think therefore, I am."];
-		const name = ["What is your name?"];
+        const name = ["What is your name?"];
+        const swear = ["Do I need to call your mother?", "Wash your mouth out with soap", "Now that's not very nice."]
 		
         var speechRecognitionList = new SpeechGrammarList();
         speechRecognitionList.addFromString(grammar, 1);
@@ -58,6 +59,9 @@
 		}		
 		else if(message.includes('weather')){
 		const finaltext = weather[Math.floor(Math.random()*weather.length)];
+		speech.text = finaltext;
+		} else if(message.includes('f***')){
+		const finaltext = swear[Math.floor(Math.random()*weather.length)];
 		speech.text = finaltext;
 		}			
 		speech.volume = 1 ;
