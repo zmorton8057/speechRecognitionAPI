@@ -1,14 +1,70 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-US">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>SpeechRecognition API</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
 </head>
 <body>
+<center>
     
+    <button id='btnGiveCommand'>Start Talking</button>
+    <br><br>
+    <span id='message'></span>
+    <br><br>
+    </center>
+    <script>
+        var message = document.querySelector('#message');
+        var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
+        var SpeechGrammarList = SpeechGrammarList || webkitSpeechGrammarList;
+        var grammar = '#JSGF V1.0;'
+        var recognition = new SpeechRecognition();
+		const weather = ["The weather is really forking hot"];
+		const greetings = ["I am doing fine, thank you for asking!"];
+		const name = ["What is your name?"];
+		
+        var speechRecognitionList = new SpeechGrammarList();
+        speechRecognitionList.addFromString(grammar, 1);
+        recognition.grammars = speechRecognitionList;
+        recognition.lang = 'en-US';
+        recognition.interimResults = false;
+        recognition.onresult = function(event) {
+            var last = event.results.length - 1;
+            var transcript = event.results[last][0].transcript;
+            message.textContent =  transcript ;
+			readOutLoad(transcript);
+           
+        };
+        recognition.onspeechend = function() {
+            recognition.stop();
+        };
+        recognition.onerror = function(event) {
+            message.textContent = 'Error occurred in recognition: ' + event.error;
+        }        
+        document.querySelector('#btnGiveCommand').addEventListener('click', function(){
+            recognition.start();
+        });
+		function readOutLoad(message){
+		const speech = new SpeechSynthesisUtterance();
+				speech.text = message; 
+		if(message.includes('how are you')){
+		const finaltext = greetings[Math.floor(Math.random()*greetings.length)];
+		speech.text = finaltext;
+		}	  
+		else if(message.includes('name')){
+		const finaltext = name[Math.floor(Math.random()*name.length)];
+		speech.text = finaltext;
+		}		
+		else if(message.includes('weather')){
+		const finaltext = weather[Math.floor(Math.random()*weather.length)];
+		speech.text = finaltext;
+		}			
+		speech.volume = 1 ;
+		speech.rate = 1;
+		speech.pitch = 1;
+		window.speechSynthesis.speak(speech);
+		}
+    </script>
 </body>
-<script src="/speechRecog.js"></script>
 </html>
