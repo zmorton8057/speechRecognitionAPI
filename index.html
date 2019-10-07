@@ -1,74 +1,89 @@
 <!DOCTYPE html>
 <html lang="en-US">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
 </head>
+
 <body>
-<center>
-    
+    <h1>Press the Button, say something, stop speaking to receive response</h1>
+
+    <h2>Commands</h2>
+
+    <ul>
+        <li>How are you?</li>
+        <li>Weather</li>
+        <li>Name</li>
+    </ul>
+
     <button id='btnGiveCommand'>Start Talking</button>
     <br><br>
     <span id='message'></span>
     <br><br>
-    </center>
+
     <script>
+        
         var message = document.querySelector('#message');
         var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
         var SpeechGrammarList = SpeechGrammarList || webkitSpeechGrammarList;
         var grammar = '#JSGF V1.0;'
         var recognition = new SpeechRecognition();
-		const weather = ["The weather is really forking hot"];
-		const greetings = ["I am doing fine, thank you for asking!","I think therefore, I am."];
+        const weather = ["The weather is really forking hot"];
+        const greetings = ["I am doing fine, thank you for asking!", "I think therefore, I am."];
         const name = ["What is your name?"];
-        const swear = ["Do I need to call your mother?", "Wash your mouth out with soap", "Now that's not very nice."]
-		
+        const swear = ["Do I need to call your mother?", "Wash your mouth out with soap.", "Now that's not very nice."]
+        var count = 0;
+
         var speechRecognitionList = new SpeechGrammarList();
         speechRecognitionList.addFromString(grammar, 1);
         recognition.grammars = speechRecognitionList;
         recognition.lang = 'en-US';
         recognition.interimResults = false;
-        recognition.onresult = function(event) {
+        recognition.onresult = function (event) {
             var last = event.results.length - 1;
             var transcript = event.results[last][0].transcript;
-            message.textContent =  transcript ;
-			readOutLoad(transcript);
-           
+            message.textContent = transcript;
+            readOutLoad(transcript);
+
         };
-        recognition.onspeechend = function() {
+        recognition.onspeechend = function () {
             recognition.stop();
         };
-        recognition.onerror = function(event) {
+        recognition.onerror = function (event) {
             message.textContent = 'Error occurred in recognition: ' + event.error;
-        }        
-        document.querySelector('#btnGiveCommand').addEventListener('click', function(){
+        }
+        document.querySelector('#btnGiveCommand').addEventListener('click', function () {
             recognition.start();
         });
-		function readOutLoad(message){
-		const speech = new SpeechSynthesisUtterance();
-				speech.text = message; 
-		if(message.includes('how are you')){
-		const finaltext = greetings[Math.floor(Math.random()*greetings.length)];
-		speech.text = finaltext;
-		}	  
-		else if(message.includes('name')){
-		const finaltext = name[Math.floor(Math.random()*name.length)];
-		speech.text = finaltext;
-		}		
-		else if(message.includes('weather')){
-		const finaltext = weather[Math.floor(Math.random()*weather.length)];
-		speech.text = finaltext;
-		} else if(message.includes('f***')){
-		const finaltext = swear[Math.floor(Math.random()*weather.length)];
-		speech.text = finaltext;
-		}			
-		speech.volume = 1 ;
-		speech.rate = 1;
-		speech.pitch = 1;
-		window.speechSynthesis.speak(speech);
-		}
+        function readOutLoad(message) {
+            const speech = new SpeechSynthesisUtterance();
+            speech.text = message;
+            if (message.includes('how are you')) {
+                const finaltext = greetings[Math.floor(Math.random() * greetings.length)];
+                speech.text = finaltext;
+                count++
+                console.log(count)
+            }
+            else if (message.includes('name')) {
+                const finaltext = name[Math.floor(Math.random() * name.length)];
+                speech.text = finaltext;
+            }
+            else if (message.includes('weather')) {
+                const finaltext = weather[Math.floor(Math.random() * weather.length)];
+                speech.text = finaltext;
+            } else if (message.includes('f***')) {
+                const finaltext = swear[Math.floor(Math.random() * weather.length)];
+                speech.text = finaltext;
+            }
+            speech.volume = 1;
+            speech.rate = 1;
+            speech.pitch = 1;
+            window.speechSynthesis.speak(speech);
+        }
     </script>
 </body>
+
 </html>
