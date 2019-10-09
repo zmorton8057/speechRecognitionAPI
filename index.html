@@ -47,7 +47,7 @@
             var transcript = event.results[last][0].transcript;
             message.textContent = transcript;
             readOutLoad(transcript);
-
+            console.log(event.results)
         };
         recognition.onspeechend = function () {
             recognition.stop();
@@ -65,7 +65,9 @@
                 const finaltext = greetings[Math.floor(Math.random() * greetings.length)];
                 speech.text = finaltext;
                 count++
-                console.log(count)
+                if (count === 2){
+                    console.log("You have reached 2")
+                } 
             }
             else if (message.includes('name')) {
                 const finaltext = name[Math.floor(Math.random() * name.length)];
